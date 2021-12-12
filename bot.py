@@ -67,10 +67,10 @@ def get_prompt(cine, zice):
         with open('chat_logs/'+cine+'.txt', 'r') as file:
             history=file.read()
             if len(history)<800:
-                prompt=history
+                prompt=history+" Human: "+zice+" AI:"
             else:
-                prompt=history[-800:]
-    return prompt   
+                prompt=history[-800:]+" Human: "+zice+" AI:"
+    return prompt
 
 async def deal_with_it(m):
     canal = str(m.channel)
@@ -82,7 +82,7 @@ async def deal_with_it(m):
 
     if "neutral" in canal:
         prompt=get_prompt(cine,zice)
-        print("prompt ",prompt)
+        print("prompt length" + len(prompt) +" prompt: ",prompt)
         reply=chat_channels[canal](prompt)
         with open('chat_logs/'+cine+'.txt', 'w') as file:
             file.write(prompt+reply)
