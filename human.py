@@ -19,3 +19,14 @@ class Human:
         self.msg_out_of_credit=False
         self.not_registered_msg=False
         self.auth_tries=0
+    
+    def to_dict(self):
+        return {
+            "address": self.address,
+            "discord_id": self.discord_id,
+            "accessToken": self.accessToken,
+            "lastUpdate": self.lastUpdate,
+            "testCredits": self.testCredits,
+            "shares": self.shares,
+            "credits": self.credits,
+        }
