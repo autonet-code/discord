@@ -81,20 +81,21 @@ def chat_sarcastic(zice):
 def codx_qna(zice):
     response = openai.Completion.create(
         engine="davinci-codex",
-        prompt="Q: "+zice+"A:",
+        prompt="\\nQ: "+zice+"\\nA:",
         temperature=0,
         max_tokens=100,
         top_p=1,
         frequency_penalty=0,
         presence_penalty=0,
-        stop=["Q:"]
+        stop=["\\n"]
     )
     
     try:
-        dobis = response.choices[0].text.split("A:")[1]
+        dobis = response.choices[0].text.split("\\n")[0]
         return str(dobis)
     except Exception as e:
-        return "that's fine, except: "+str(e)
+
+        return response.choices[0].text
 
 def codx_xplain(zice):
     response = response = openai.Completion.create(

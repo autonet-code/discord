@@ -23,7 +23,7 @@ import typing as t
 import sqlite3
 
 master_commands = {"restart":services.restart,"say":None}
-chat_channels = {"😐neutral":services.chat_neutral}
+chat_channels = {"🏮gpt-3":services.chat_neutral}
 tools_channels = {"❓ask-a-question":services.codx_qna,"💻write-python-code":services.codex,"📓explain-code":services.codx_xplain,"💭simplify":services.codx_simplify}
 
 autonet: Guild
@@ -80,9 +80,9 @@ async def deal_with_it(m):
     reply=generic[randrange(0,len(generic))]
     ramane=reply
 
-    if "neutral" in canal:
+    if "gpt" in canal:
         prompt=get_prompt(cine,zice)
-        print("prompt length" + len(prompt) +" prompt: ",prompt)
+        print("prompt length" + str(len(prompt)) +" prompt: ",prompt)
         reply=chat_channels[canal](prompt)
         with open('chat_logs/'+cine+'.txt', 'w') as file:
             file.write(prompt+reply)
@@ -93,7 +93,7 @@ async def deal_with_it(m):
 
     else:
         if len(zice)>600:
-            reply="Keep your input under 500 characters, please (a little more than two tweets)"
+            reply="Keep your input under 600 characters, please (a little more than two tweets)"
         else:
             reply=tools_channels[canal](zice)
         await m.reply(content=reply)
@@ -106,6 +106,8 @@ async def on_message(mess):
         cine = str(m.author)    
         zice= str(m.content)
         if "auto#1967" in cine:
+            return None
+        if "***" in zice:
             return None
         if "Eight Rice#1340" in canal and zice.split(" ")[0]in master_commands:
             print("executing master command ",zice)
