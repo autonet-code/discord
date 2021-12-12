@@ -1,0 +1,6 @@
+.env
+chat_logs
+__pycache__
+date.db
+date.db-journal
+atntokencreds.json
