@@ -84,7 +84,7 @@ async def deal_with_it(m):
         prompt=get_prompt(cine,zice)
         print("prompt length" + str(len(prompt)) +" prompt: ",prompt)
         reply=chat_channels[canal](prompt)
-        with open('chat_logs/'+cine+'.txt', 'w') as file:
+        with open('chat_logs/'+cine+'.txt', 'w', encoding="utf-8") as file:
             file.write(prompt+reply)
         await m.reply(content=reply)
     elif "trusty" in canal:
@@ -111,7 +111,6 @@ async def on_message(mess):
             return None
         if "Eight Rice#1340" in canal and zice.split(" ")[0]in master_commands:
             print("executing master command ",zice)
-
             await master(m)
             return None
         if "trusty" in canal:
@@ -145,13 +144,15 @@ async def on_message(mess):
                     h.testCredits=h.testCredits-1
                     await deal_with_it(m)
                     doc_ref.document(h.address).set(h.to_dict())
-            if not registered and h.not_registered_msg==False:
+            if not registered:
                 await m.delete(delay=None)
-                h.not_registered_msg=True
-                try:
-                    await m.author.send(content="Your Discord ID is not registered. To get your free daily credits and unlimited chat with Trusty, go to www.autonet.live, sign in, grab your Access Token from the Profile section (click on your address on the top right and go to Credits). Once you've done that, come back here and type *auth YOUR_ACCESS_TOKEN. It sounds more complicated than it actually is, just try to do it and if you have any issues ask somebody, but don't give them your access_token. Only paste that as a private message here. ")
-                except:
-                    await m.reply(content="Get your access token from https://autonet.live and put it in a private message to me like this: *auth ACCESS_TOKEN.")
+                if h.not_registered_msg==False:
+                    try:
+                        await m.author.send(content="Your Discord ID is not registered. To get your free daily credits and unlimited chat with Trusty, go to www.autonet.live, sign in, grab your Access Token from the Profile section (click on your address on the top right and go to Credits). Once you've done that, come back here and type *auth YOUR_ACCESS_TOKEN. It sounds more complicated than it actually is, just try to do it and if you have any issues ask somebody, but don't give them your access_token. Only paste that as a private message here. ")
+                        h.not_registered_msg=True
+                    except:
+                        await m.reply(content="Get your access token from https://autonet.live and put it in a private message to me like this: *auth ACCESS_TOKEN.")
+                        h.not_registered_msg=True
                 return None
         if zice[:5]=="*auth":   
             get_db()
